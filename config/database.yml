@@ -1,4 +1,4 @@
-<% project_name = 'reddit-clone' %>
+<% project_name = 'reddit-clone-iteration' %>
 
 default: &default
   adapter: postgresql
