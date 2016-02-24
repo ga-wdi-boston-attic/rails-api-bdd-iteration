@@ -28,10 +28,7 @@ RSpec.describe 'Article Comments API' do
 
   before(:all) do
     Article.create!(article_params)
-    article.comments << Comment.create!(comment_params)
-
-    # Create an unassociated comment to prove scoping
-    Comment.create!(comment_params)
+    article.comments.create!(comment_params)
   end
 
   after(:all) do
@@ -44,10 +41,10 @@ RSpec.describe 'Article Comments API' do
 
       expect(response).to be_success
 
-      article_comments_collection = JSON.parse(response.body)
-      expect(article_comments_collection.length).to eq(article_comments.count)
+      parsed_response = JSON.parse(response.body)
+      expect(parsed_response['comments'].length).to eq(article_comments.count)
       expect(
-        article_comments_collection['comments'].first['content']
+        parsed_response['comments'].first['content']
       ).to eq(article_first_comment.content)
     end
   end
