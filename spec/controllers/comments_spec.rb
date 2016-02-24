@@ -61,5 +61,4 @@ RSpec.describe CommentsController do
       expect(response.body).to be_empty
     end
   end
-
 end
