@@ -29,6 +29,8 @@ By the end of this lesson, students should be able to:
 
 ## Demo: Shallow Routes
 
+## Demo: Authenticated Requests for Articles
+
 ## Code-along: Associate Articles with Users
 
 ## Lab: Associate Comments with Users
