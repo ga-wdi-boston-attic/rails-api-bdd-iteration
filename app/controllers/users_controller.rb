@@ -57,17 +57,15 @@ class UsersController < ProtectedController
     head :bad_request
   end
 
-  private
-
   def user_creds
     params.require(:credentials)
-      .permit(:email, :password, :password_confirmation)
+          .permit(:email, :password, :password_confirmation)
   end
+  private :user_creds
 
   def pw_creds
     params.require(:passwords)
-      .permit(:old, :new)
+          .permit(:old, :new)
   end
-
-  private :user_creds, :pw_creds
+  private :pw_creds
 end

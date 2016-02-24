@@ -54,7 +54,9 @@ RSpec.describe 'Article Comments API' do
 
   describe 'POST /articles/:id/comments' do
     it 'creates an comment on a given article' do
-      post "/articles/#{article.id}/comments", comment: comment_params, format: :json
+      post "/articles/#{article.id}/comments",
+           comment: comment_params,
+           format: :json
 
       expect(response).to be_success
 
@@ -62,7 +64,9 @@ RSpec.describe 'Article Comments API' do
 
       expect(article_comment_response['id']).not_to be_nil
       expect(article_comment_response['article_id']).not_to be_nil
-      expect(article_comment_response['content']).to eq(comment_params[:content])
+      expect(
+        article_comment_response['content']
+      ).to eq(comment_params[:content])
     end
   end
 end

@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe CommentsController do
   def comment_params
     {
-     content: 'This is linkbait.'
+      content: 'This is linkbait.'
     }
   end
 

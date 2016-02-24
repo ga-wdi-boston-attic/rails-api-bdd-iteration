@@ -53,7 +53,9 @@ RSpec.describe 'Comments API' do
 
   describe 'DELETE /comments/:id' do
     it 'deletes an comment' do
-      delete "/comments/#{comment.id}", comment: { id: comment.id }, format: :json
+      delete "/comments/#{comment.id}",
+             comment: { id: comment.id },
+             format: :json
 
       expect(response).to be_success
       expect(response.body).to be_empty

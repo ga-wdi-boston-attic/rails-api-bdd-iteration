@@ -3,14 +3,14 @@ require 'rails_helper'
 RSpec.describe CommentsController do
   def article_params
     {
-     title: 'One Weird Trick',
-     content: 'You won\'t believe what happens next...'
+      title: 'One Weird Trick',
+      content: 'You won\'t believe what happens next...'
     }
   end
 
   def comment_params
     {
-     content: 'This is linkbait.'
+      content: 'This is linkbait.'
     }
   end
 
@@ -41,10 +41,10 @@ RSpec.describe CommentsController do
     end
   end
 
-
   describe 'POST create' do
     before(:each) do
-      post :create, article_id: article.id, comment: comment_params, format: :json
+      post :create,
+           article_id: article.id, comment: comment_params, format: :json
     end
 
     it 'is successful' do
