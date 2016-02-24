@@ -16,12 +16,26 @@ RSpec.describe 'Articles API' do
     Article.first
   end
 
+  def user_params
+    {
+      email: 'alice@example.com',
+      password: 'foobarbaz',
+      password_confirmation: 'foobarbaz'
+    }
+  end
+
+  def user
+    User.first
+  end
+
   before(:all) do
+    User.create!(user_params)
     Article.create!(article_params)
   end
 
   after(:all) do
     Article.delete_all
+    User.delete_all
   end
 
   describe 'GET /articles' do
@@ -48,40 +62,80 @@ RSpec.describe 'Articles API' do
     end
   end
 
-  describe 'POST /articles' do
-    it 'creates an article' do
-      post '/articles', article: article_params, format: :json
+  context 'when authenticated' do
+    def headers
+      {
+        'HTTP_AUTHORIZATION' => "Token token=#{user.token}"
+      }
+    end
 
-      expect(response).to be_success
+    describe 'POST /articles' do
+      it 'creates an article' do
+        post '/articles', { article: article_params }, headers
 
-      article_response = JSON.parse(response.body)
-      expect(article_response['id']).not_to be_nil
-      expect(article_response['title']).to eq(article_params[:title])
+        expect(response).to be_success
+
+        article_response = JSON.parse(response.body)
+        expect(article_response['id']).not_to be_nil
+        expect(article_response['title']).to eq(article_params[:title])
+      end
+    end
+
+    describe 'PATCH /articles/:id' do
+      def article_diff
+        { title: 'Two Stupid Tricks' }
+      end
+
+      it 'updates an article' do
+        patch "/articles/#{article.id}", { article: article_diff }, headers
+
+        expect(response).to be_success
+
+        article_response = JSON.parse(response.body)
+        expect(article_response['id']).to eq(article.id)
+        expect(article_response['title']).to eq(article_diff[:title])
+      end
+    end
+
+    describe 'DELETE /articles/:id' do
+      it 'deletes an article' do
+        delete "/articles/#{article.id}", nil, headers
+
+        expect(response).to be_success
+        expect(response.body).to be_empty
+      end
     end
   end
 
-  describe 'PATCH /articles/:id' do
-    def article_diff
-      { title: 'Two Stupid Tricks' }
+  context 'when not authenticated' do
+    def headers
+      {
+        'HTTP_AUTHORIZATION' => nil
+      }
     end
 
-    it 'updates an article' do
-      patch "/articles/#{article.id}", article: article_diff, format: :json
+    describe 'POST /articles' do
+      it 'is not successful' do
+        post '/articles', nil, headers
 
-      expect(response).to be_success
-
-      article_response = JSON.parse(response.body)
-      expect(article_response['id']).to eq(article.id)
-      expect(article_response['title']).to eq(article_diff[:title])
+        expect(response).not_to be_success
+      end
     end
-  end
 
-  describe 'DELETE /articles/:id' do
-    it 'deletes an article' do
-      delete "/articles/#{article.id}", article: { id: article.id }, format: :json
+    describe 'PATCH /articles/:id' do
+      it 'is not successful' do
+        patch "/articles/#{article.id}", nil, headers
 
-      expect(response).to be_success
-      expect(response.body).to be_empty
+        expect(response).not_to be_success
+      end
+    end
+
+    describe 'DELETE /articles/:id' do
+      it 'is not successful' do
+        delete "/articles/#{article.id}", nil, headers
+
+        expect(response).not_to be_success
+      end
     end
   end
 end

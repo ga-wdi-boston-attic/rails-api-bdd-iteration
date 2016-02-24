@@ -12,12 +12,26 @@ RSpec.describe ArticlesController do
     Article.first
   end
 
+  def user_params
+    {
+      email: 'alice@example.com',
+      password: 'foobarbaz',
+      password_confirmation: 'foobarbaz'
+    }
+  end
+
+  def user
+    User.first
+  end
+
   before(:all) do
+    User.create!(user_params)
     Article.create!(article_params)
   end
 
   after(:all) do
     Article.delete_all
+    User.delete_all
   end
 
   describe 'GET index' do
@@ -47,46 +61,79 @@ RSpec.describe ArticlesController do
     end
   end
 
-  describe 'POST create' do
+  context 'when authenticated' do
     before(:each) do
-      post :create, article: article_params, format: :json
+      request.env['HTTP_AUTHORIZATION'] = "Token token=#{user.token}"
     end
 
-    it 'is successful' do
-      expect(response).to be_successful
+    describe 'POST create' do
+      before(:each) do
+        post :create, article: article_params, format: :json
+      end
+
+      it 'is successful' do
+        expect(response).to be_successful
+      end
+
+      it 'renders a JSON response' do
+        article_response = JSON.parse(response.body)
+        expect(article_response).not_to be_nil
+      end
     end
 
-    it 'renders a JSON response' do
-      article_response = JSON.parse(response.body)
-      expect(article_response).not_to be_nil
+    describe 'PATCH update' do
+      def article_diff
+        { title: 'Two Stupid Tricks' }
+      end
+
+      before(:each) do
+        patch :update, id: article.id, article: article_diff, format: :json
+      end
+
+      it 'is successful' do
+        expect(response).to be_successful
+      end
+
+      it 'renders a JSON response' do
+        article_response = JSON.parse(response.body)
+        expect(article_response).not_to be_nil
+      end
+    end
+
+    describe 'DELETE destroy' do
+      it 'is successful and returns an empty response' do
+        delete :destroy, id: article.id, format: :json
+
+        expect(response).to be_successful
+        expect(response.body).to be_empty
+      end
     end
   end
 
-  describe 'PATCH update' do
-    def article_diff
-      { title: 'Two Stupid Tricks' }
-    end
-
+  context 'when not authenticated' do
     before(:each) do
-      patch :update, id: article.id, article: article_diff, format: :json
+      request.env['HTTP_AUTHORIZATION'] = nil
     end
 
-    it 'is successful' do
-      expect(response).to be_successful
+    describe 'POST create' do
+      it 'is not successful' do
+        post :create, article: article_params
+        expect(response).not_to be_successful
+      end
     end
 
-    it 'renders a JSON response' do
-      article_response = JSON.parse(response.body)
-      expect(article_response).not_to be_nil
+    describe 'PATCH update' do
+      it 'is not successful' do
+        patch :update, id: article.id
+        expect(response).not_to be_successful
+      end
     end
-  end
 
-  describe 'DELETE destroy' do
-    it 'is successful and returns an empty response' do
-      delete :destroy, id: article.id, format: :json
-
-      expect(response).to be_successful
-      expect(response.body).to be_empty
+    describe 'DELETE destroy' do
+      it 'is not successful' do
+        delete :destroy, id: article.id
+        expect(response).not_to be_successful
+      end
     end
   end
 end

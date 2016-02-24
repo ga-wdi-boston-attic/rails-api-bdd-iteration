@@ -1,5 +1,7 @@
-class ArticlesController < ApplicationController
+#
+class ArticlesController < ProtectedController
   before_filter :set_article, only: [:show, :update, :destroy]
+  skip_before_action :authenticate, only: [:index, :show]
 
   def index
     render json: Article.all
@@ -32,13 +34,13 @@ class ArticlesController < ApplicationController
     head :no_content
   end
 
-private
-
   def set_article
     @article = Article.find(params[:id])
   end
+  private :set_article
 
   def article_params
     params.require(:article).permit(:title, :content)
   end
+  private :article_params
 end
