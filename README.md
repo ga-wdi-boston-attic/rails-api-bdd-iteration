@@ -37,6 +37,8 @@ By the end of this lesson, students should be able to:
 
 ## Lab: Associate Comments with Articles
 
+## Bonus: Write a Tested, Behavior-Driven Blog API in Rails
+
 ## [License](LICENSE)
 
 Source code distributed under the MIT license. Text and other assets copyright
