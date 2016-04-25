@@ -79,11 +79,28 @@ as all other member routes that are not nested (i.e., `:show`, `:update`,
 Let's check out how our [requests/articles_spec.rb](spec/requests/articles_spec.rb)
 has changed since our last pass at this.
 
-## Code-along: Associate Articles with Users
-
-## Lab: Associate Comments with Users
-
 ## Lab: Associate Comments with Articles
+
+Start with modifying your Comments migration.
+
+Then, update your Comments and Articles models to handle this new relationship.
+
+## Code-along: Test Article Model
+
+In [spec/models/article_spec.rb](spec/models/article_spec.rb), let's test to
+see if we:
+
+1.  are associating comments to articles
+1.  have set our `inverse_of` record
+1.  are deleting comments associated to articles when articles are deleted
+
+## Lab: Test Comments Model
+
+In [spec/models/comment_spec.rb](spec/models/comment_spec.rb), use the tests we
+created for the Article model to guide your tests to ensure you:
+
+1. are associating articles to comments
+1. have set your `inverse_of` record
 
 ## Bonus: Write a Tested, Behavior-Driven Blog API in Rails
 
