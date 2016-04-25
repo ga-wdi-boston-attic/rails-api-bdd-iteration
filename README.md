@@ -28,7 +28,46 @@ By the end of this lesson, students should be able to:
 
 ## Discussion: Choosing Endpoints for Article Comments
 
+Check out our nested routes in [routes.db](app/config/routes.rb).
+
+Before we associated Comments to Articles, our Articles routes looked like this:
+
+```ruby
+resources :articles, except: [:new, :edit]
+```
+
+Now that we're associating Comments to Articles, we can take advantage of
+Rails' **nested routes** feature. Hence, our routes for these resources now look
+like this:
+
+```ruby
+resources :articles, except: [:new, :edit] do
+  resources :comments, only: [:index, :create]
+end
+resources :comments, except: [:new, :edit, :index, :create]
+```
+
+Let's run `rake routes` and take a look at what this gives us.
+
 ## Demo: Shallow Routes
+
+Nested routes offer many advantages, but can still look a little sloppy
+depending on the restrictions you need to apply to each resource, respectively.
+
+Rails to the rescue!
+
+We can leverage **shallow routes** to generate the same routes.
+
+```ruby
+resources :articles, except: [:new, :edit] do
+  resources :comments, except: [:new, :edit], shallow: true
+end
+```
+
+Here, adding `shallow: true` to our comments resources generates all collection
+routes for the child route association (i.e., `:index` and `:create`) as well
+as all other member routes that are not nested (i.e., `:show`, `:update`,
+`:destroy`).
 
 ## Demo: Authenticated Requests for Articles
 
