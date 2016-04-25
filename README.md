@@ -99,8 +99,8 @@ see if we:
 In [spec/models/comment_spec.rb](spec/models/comment_spec.rb), use the tests we
 created for the Article model to guide your tests to ensure you:
 
-1. are associating articles to comments
-1. have set your `inverse_of` record
+1.  are associating articles to comments
+1.  have set your `inverse_of` record
 
 ## Bonus: Write a Tested, Behavior-Driven Blog API in Rails
 
