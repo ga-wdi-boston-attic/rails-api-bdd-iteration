@@ -46,7 +46,7 @@ RSpec.describe 'Articles API' do
 
       articles_response = JSON.parse(response.body)
       expect(articles_response.length).to eq(articles.count)
-      expect(articles_response['articles'].first['title']).to eq(article.title)
+      expect(articles_response[0]['title']).to eq(article.title)
     end
   end
 
