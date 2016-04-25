@@ -23,6 +23,13 @@ By the end of this lesson, students should be able to:
     this repository.
 1.  Install dependencies with `bundle install`.
 1.  Run `rake db:create db:migrate`
+1.  Create `config/secrets.yml` and run `rake secret` twice to generate tokens.
+
+  ```ruby
+  test:
+    secret_key_base: XXX
+    secret_token: XXX
+  ```
 
 ## Iterative Development
 
@@ -70,6 +77,9 @@ as all other member routes that are not nested (i.e., `:show`, `:update`,
 `:destroy`).
 
 ## Demo: Authenticated Requests for Articles
+
+Let's check out how our [requests/articles_spec.rb](spec/requests/articles_spec.rb)
+has changed since our last pass at this.
 
 ## Code-along: Associate Articles with Users
 
