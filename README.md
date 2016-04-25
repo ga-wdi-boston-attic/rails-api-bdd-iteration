@@ -31,8 +31,6 @@ By the end of this lesson, students should be able to:
     secret_token: XXX
   ```
 
-## Iterative Development
-
 ## Discussion: Choosing Endpoints for Article Comments
 
 Check out our nested routes in [routes.db](app/config/routes.rb).
