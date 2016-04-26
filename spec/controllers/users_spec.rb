@@ -18,11 +18,11 @@ RSpec.describe UsersController do
       post :signup, { credentials: user_params }, format: :json
     end
 
-    it 'is successful' do
+    skip 'is successful' do
       expect(response).to be_successful
     end
 
-    it 'renders a JSON response' do
+    skip 'renders a JSON response' do
       parsed_response = JSON.parse(response.body)
       expect(parsed_response).not_to be_nil
     end
@@ -34,11 +34,11 @@ RSpec.describe UsersController do
       post :signin, { credentials: user_params }, format: :json
     end
 
-    it 'is successful' do
+    skip 'is successful' do
       expect(response).to be_successful
     end
 
-    it 'renders a JSON response' do
+    skip 'renders a JSON response' do
       parsed_response = JSON.parse(response.body)
       expect(parsed_response).not_to be_nil
     end
@@ -69,11 +69,11 @@ RSpec.describe UsersController do
               format: :json
       end
 
-      it 'is successful' do
+      skip 'is successful' do
         expect(response).to be_successful
       end
 
-      it 'renders no response body' do
+      skip 'renders no response body' do
         expect(response.body).to be_empty
       end
     end
@@ -83,11 +83,11 @@ RSpec.describe UsersController do
         delete :signout, id: @user_id, format: :json
       end
 
-      it 'is successful' do
+      skip 'is successful' do
         expect(response).to be_successful
       end
 
-      it 'renders no response body' do
+      skip 'renders no response body' do
         expect(response.body).to be_empty
       end
     end
@@ -97,11 +97,11 @@ RSpec.describe UsersController do
         get :index, format: :json
       end
 
-      it 'is successful' do
+      skip 'is successful' do
         expect(response).to be_successful
       end
 
-      it 'renders a JSON response' do
+      skip 'renders a JSON response' do
         parsed_response = JSON.parse(response.body)
         expect(parsed_response).not_to be_nil
       end
@@ -112,11 +112,11 @@ RSpec.describe UsersController do
         get :index, id: @user_id, format: :json
       end
 
-      it 'is successful' do
+      skip 'is successful' do
         expect(response).to be_successful
       end
 
-      it 'renders a JSON response' do
+      skip 'renders a JSON response' do
         parsed_response = JSON.parse(response.body)
         expect(parsed_response).not_to be_nil
       end

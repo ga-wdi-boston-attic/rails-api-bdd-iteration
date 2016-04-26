@@ -13,7 +13,7 @@
 By the end of this lesson, students should be able to:
 
 -   Explain the value of iterative development.
--   Write request specs for associations.
+-   Write concise, associated routes.
 -   Write model unit specs for associations.
 -   Write model unit specs for validations.
 
@@ -30,6 +30,25 @@ By the end of this lesson, students should be able to:
     secret_key_base: XXX
     secret_token: XXX
   ```
+
+## Demo: Authenticated Requests for Articles
+
+Let's check out how our [requests/articles_spec.rb](spec/requests/articles_spec.rb)
+has changed since our last pass at this.
+
+## Demo: Associated Request Specs for Comments of Articles
+
+Let's look into [requests/article_comments_spec.rb](spec/requests/article_comments_spec.rb)
+and examine what is required to make a request on associations. What do you
+notice about our endpoints?
+
+## Code-along: Associate Comments with Articles
+
+Start with modifying our Comments migration
+(`rails g migration AddArticleToComments`).
+
+Then, we will update our Comments and Articles models to handle this new
+relationship.
 
 ## Discussion: Choosing Endpoints for Article Comments
 
@@ -62,7 +81,7 @@ collection (i.e., deleting ONE comment).
 
 Let's run `rake routes` and take a look at what this gives us.
 
-## Demo: Shallow Routes
+## Discussion: Shallow Routes
 
 Nested routes offer many advantages, but can still look a little sloppy
 depending on the restrictions you need to apply to each resource, respectively.
@@ -82,18 +101,8 @@ routes for the child route association (i.e., `:index` and `:create`) as well
 as all other member routes that are not nested (i.e., `:show`, `:update`,
 `:destroy`).
 
-## Demo: Authenticated Requests for Articles
-
-Let's check out how our [requests/articles_spec.rb](spec/requests/articles_spec.rb)
-has changed since our last pass at this.
-
-## Code-along: Associate Comments with Articles
-
-Start with modifying your Comments migration
-(`rails g migration AddArticleToComments`).
-
-Then, we will update our Comments and Articles models to handle this new
-relationship.
+**It's your choice whether you use nested or shallow routes.**
+Testing for Article/Comment associated routes can be found at [routing/article_comments_spec.rb](spec/routing/article_comments_spec.rb).
 
 ## Code-along: Test Article Model
 
