@@ -87,11 +87,13 @@ as all other member routes that are not nested (i.e., `:show`, `:update`,
 Let's check out how our [requests/articles_spec.rb](spec/requests/articles_spec.rb)
 has changed since our last pass at this.
 
-## Lab: Associate Comments with Articles
+## Code-along: Associate Comments with Articles
 
-Start with modifying your Comments migration.
+Start with modifying your Comments migration
+(`rails g migration AddArticleToComments`).
 
-Then, update your Comments and Articles models to handle this new relationship.
+Then, we will update our Comments and Articles models to handle this new
+relationship.
 
 ## Code-along: Test Article Model
 
@@ -127,7 +129,8 @@ comment's `content`.
 ## Code-along: `validates_associated` on Article Model
 
 Rails' `validates_associated` helper ensures that associations with validations
-are also checked upon save.
+are also checked upon save. Let's test for this and let the tests guide us
+towards its implementation.
 
 Note: do **not** apply `validates_associated` to both the Article and Comment
 models. They will call themselves in an infinite loop.
