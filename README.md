@@ -135,15 +135,6 @@ adequately-validated model.
 Your turn. Let your test(s) drive you towards validating the presence of a new
 comment's `content`.
 
-## Code-along: `validates_associated` on Article Model
-
-Rails' `validates_associated` helper ensures that associations with validations
-are also checked upon save. Let's test for this and let the tests guide us
-towards its implementation.
-
-Note: do **not** apply `validates_associated` to both the Article and Comment
-models. They will call themselves in an infinite loop.
-
 ## Bonus: Write a Tested, Behavior-Driven Blog API in Rails
 
 ## [License](LICENSE)
