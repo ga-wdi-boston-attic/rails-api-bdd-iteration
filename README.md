@@ -22,20 +22,118 @@ By the end of this lesson, students should be able to:
 1.  [Fork and clone](https://github.com/ga-wdi-boston/meta/wiki/ForkAndClone)
     this repository.
 1.  Install dependencies with `bundle install`.
+1.  Run `rake db:create db:migrate`
+1.  Create `config/secrets.yml` and run `rake secret` twice to generate tokens.
 
-## Iterative Development
+  ```ruby
+  test:
+    secret_key_base: XXX
+    secret_token: XXX
+  ```
 
 ## Discussion: Choosing Endpoints for Article Comments
 
+Check out our nested routes in [routes.db](app/config/routes.rb).
+
+Before we associated Comments to Articles, our Articles routes looked like this:
+
+```ruby
+resources :articles, except: [:new, :edit]
+```
+
+Now that we're associating Comments to Articles, we can take advantage of
+Rails' **nested routes** feature. Hence, our routes for these resources now look
+like this:
+
+```ruby
+resources :articles, except: [:new, :edit] do
+  resources :comments, only: [:index, :create]
+end
+resources :comments, except: [:new, :edit]
+```
+
+Comments' `:index` and `:create` methods are **collection** routes in Rails,
+meaning their actions act upon the collection of their resource, hence why they
+are nested (i.e., showing ALL comments associated to an article).
+
+Comments' `:update`, `:show`, and `:destroy` methods are **member** routes in
+Rails, meaning their actions act upon a single member of the resource
+collection (i.e., deleting ONE comment).
+
+Let's run `rake routes` and take a look at what this gives us.
+
 ## Demo: Shallow Routes
+
+Nested routes offer many advantages, but can still look a little sloppy
+depending on the restrictions you need to apply to each resource, respectively.
+
+Rails to the rescue!
+
+We can leverage **shallow routes** to generate the same routes.
+
+```ruby
+resources :articles, except: [:new, :edit] do
+  resources :comments, except: [:new, :edit], shallow: true
+end
+```
+
+Here, adding `shallow: true` to our comments resources generates all collection
+routes for the child route association (i.e., `:index` and `:create`) as well
+as all other member routes that are not nested (i.e., `:show`, `:update`,
+`:destroy`).
 
 ## Demo: Authenticated Requests for Articles
 
-## Code-along: Associate Articles with Users
+Let's check out how our [requests/articles_spec.rb](spec/requests/articles_spec.rb)
+has changed since our last pass at this.
 
-## Lab: Associate Comments with Users
+## Code-along: Associate Comments with Articles
 
-## Lab: Associate Comments with Articles
+Start with modifying your Comments migration
+(`rails g migration AddArticleToComments`).
+
+Then, we will update our Comments and Articles models to handle this new
+relationship.
+
+## Code-along: Test Article Model
+
+In [spec/models/article_spec.rb](spec/models/article_spec.rb), let's test to
+see if we:
+
+1.  are associating comments to articles
+1.  have set our `inverse_of` record
+1.  are deleting comments associated to articles when articles are deleted
+
+## Lab: Test Comments Model
+
+In [spec/models/comment_spec.rb](spec/models/comment_spec.rb), use the tests we
+created for the Article model to guide your tests to ensure you:
+
+1.  are associating articles to comments
+1.  have set your `inverse_of` record
+
+## Code-along: Iterate over Article Model to Ensure Validations
+
+Using our BDD skills, let's create tests to check that our Article model is
+validating the presence of `content` and `title`. We don't want articles
+created that omit either.
+
+We will create our tests first and let those drive us towards an
+adequately-validated model.
+
+## Lab: Iterate over Comment Model to Ensure Validations
+
+Your turn. Let your test(s) drive you towards validating the presence of a new
+comment's `content`.
+
+## Code-along: `validates_associated` on Article Model
+
+Rails' `validates_associated` helper ensures that associations with validations
+are also checked upon save. Let's test for this and let the tests guide us
+towards its implementation.
+
+Note: do **not** apply `validates_associated` to both the Article and Comment
+models. They will call themselves in an infinite loop.
 
 ## Bonus: Write a Tested, Behavior-Driven Blog API in Rails
 

@@ -47,7 +47,7 @@ RSpec.describe 'Article Comments API' do
       article_comments_collection = JSON.parse(response.body)
       expect(article_comments_collection.length).to eq(article_comments.count)
       expect(
-        article_comments_collection['comments'].first['content']
+        article_comments_collection[0]['content']
       ).to eq(article_first_comment.content)
     end
   end
